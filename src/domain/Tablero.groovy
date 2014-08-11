@@ -95,7 +95,7 @@ class Tablero {
     }
 
     //Se suman los elementos vivos de cada grupo.
-    int calcularSumaCeldas(arrayList, renglon, columna) {
+    private int calcularSumaCeldas(arrayList, renglon, columna) {
         //Inicialización de la variable suma
         def suma = 0
 
@@ -272,6 +272,18 @@ class Tablero {
 
         //Se regresa el valor calculado.
         return indexRow
+    }
+
+    //Representación en texto del array list del tablero.
+    String getElementos() {
+        //Se define una variable para guardar la cadena generada.
+        StringBuffer output = new StringBuffer("")
+
+        //Se recorren los arreglos para obtener los valores
+        output.append utilerias.arrayListToString(elementos)
+
+        //Se regresa l representación en texto del objeto
+        return output
     }
 
     //Pruebas de los métodos de la clase

@@ -4,7 +4,9 @@
 
 package views
 
+import domain.Tablero
 import groovy.swing.SwingBuilder
+import services.SemillaService
 
 import javax.swing.JTextArea
 import java.awt.BorderLayout
@@ -16,7 +18,10 @@ class JuegoView {
 
     def swing = new SwingBuilder()
     def frame
-    JTextArea infoArea
+    JTextArea infoArea, tableroArea
+
+    def tablero
+    Thread hiloCalculos;
 
     static void main(args) {
         def juego = new JuegoView()
@@ -24,6 +29,9 @@ class JuegoView {
     }
 
     void run() {
+        //Se inicializa el tablero
+        iniciarTablero()
+
         //Se definen las acciones de la pantala.
         def start = swing.action(
                 name: 'Iniciar',
@@ -80,7 +88,7 @@ class JuegoView {
                 vbox(constraints: BorderLayout.CENTER,
                     border: BorderFactory.createTitledBorder('Tablero')) {
                         scrollPane(constraints: BorderLayout.CENTER, border: BorderFactory.createRaisedBevelBorder()) {
-                            textArea(text: '', toolTipText: 'Se despliega la información del juego.')
+                            tableroArea = textArea(text: tablero.getElementos(), toolTipText: 'Se despliega la información del juego.')
                     }
                 }
 
@@ -103,6 +111,15 @@ class JuegoView {
     // Implementacion de las acciones con métodos
     def iniciarJuego (event) {
         infoArea.append("[" + new Date().toString() + "] Se oprimió el botón iniciar juego.\n")
+
+        //Se define un hilo para
+        hiloCalculos = Thread.start {
+            while (true) {
+                tablero.calcularNuevoEstado()
+                tableroArea.text = tablero.getElementos()
+                sleep(1000)
+            }
+        }
     }
 
     def detenerJuego (event) {
@@ -118,6 +135,19 @@ class JuegoView {
         JOptionPane.showMessageDialog (frame, "Implementación del \n" +
                                               "Juego de la Vida de Conway \n" +
                                               "por Efraín Salomón.")
+    }
+
+    void iniciarTablero () {
+        def service = new SemillaService()
+        //def semilla = service.createSemillaBlock()
+        def semilla = service.createSemillaBlinker()
+        //def semilla = service.createSemillaToad()
+
+        //Se crea un tablero con la semilla recien creada
+        tablero = new Tablero(semilla)
+
+        //Se prueban dos iteraciones de cálculos
+        tablero.calcularNuevoEstado()
     }
 }
 
