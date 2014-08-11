@@ -31,7 +31,6 @@ class Semilla {
         //Se obtienen el número de columnas y renglones del arreglo
         this.alto   = elementos.size()
         this.ancho  = elementos[0].size()
-        println ""
     }
 
     //Constructor por defectos de los objetos semilla
@@ -72,7 +71,7 @@ class Semilla {
         return output
     }
 
-    //Método principal de la clase.
+    //Pruebas de los métodos de la clase
     static void main(args) {
         //Se crea una semilla de prueba
         def semilla1 = new Semilla('Semilla de Prueba 1')
