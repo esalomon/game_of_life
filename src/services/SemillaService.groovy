@@ -7,22 +7,36 @@ import domain.Semilla
  */
 class SemillaService {
 
-    def createSemillaDefecto () {
+    //Se define una semilla con patrón Block
+    def createSemillaBlock () {
 
-        //Se define una semilla de 8 columnas por 8 renglones
-        def semillaDefecto = new Semilla ("semilla por defecto", 7, 7)
+        //Se define el patrón de la semilla
+        def elementos = [[0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0]]
 
-        return semillaDefecto
+        //Se crea un objeto semilla con el arreglo definido previamente
+        def semillaBlock = new Semilla('Semilla Block', elementos)
 
+        //Se regresa la semilla recién creada
+        return semillaBlock
     }
 
+    //Pruebas de los métodos de la clase
     static void main(args) {
 
-     def service = new SemillaService()
+        //Se define una instancia de la clase
+        def service = new SemillaService()
 
-     def semilla = service.createSemillaDefecto()
+        //Se ejecuta el método a ser probado y se imprime su contenido.
+        def semilla = service.createSemillaBlock()
+        println semilla
 
-     println semilla
 
     }
 }
