@@ -27,6 +27,24 @@ class Tablero {
         this.ancho  = elementos[0].size()
     }
 
+    //Destrucción del objeto semilla
+    void finalize() {
+        //Se recorren los arreglos para obtener los valores
+        for (int renglon = 0; renglon < this.alto; renglon++ ){
+
+            //Se libera cada uno de los arreglos internos
+            this.elementos[renglon].clear()
+        }
+
+        //Se liberan el renglon externo
+        this.elementos.clear()
+
+        //Se asigna null a las variables de la instancia
+        semilla = null
+        alto    = null
+        ancho   = null
+    }
+
     //Representación en texto de los objetos tablero
     String toString (){
         //Se define una variable para guardar la cadena generada.
