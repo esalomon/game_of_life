@@ -7,7 +7,7 @@ import domain.Semilla
  */
 class SemillaService {
 
-    //Se define una semilla con patrón Block
+    //Se define una semilla con el patrón especificado
     def createSemillaBlock () {
 
         //Se define el patrón de la semilla
@@ -21,13 +21,13 @@ class SemillaService {
                          [0,0,0,0,0,0,0,0]]
 
         //Se crea un objeto semilla con el arreglo definido previamente
-        def semillaBlock = new Semilla('Block', elementos)
+        def semilla = new Semilla('Block', elementos)
 
         //Se regresa la semilla recién creada
-        return semillaBlock
+        return semilla
     }
 
-    //Se define una semilla con patrón Block
+    //Se define una semilla con el patrón especificado
     def createSemillaBeehive () {
 
         //Se define el patrón de la semilla
@@ -41,13 +41,13 @@ class SemillaService {
                          [0,0,0,0,0,0,0,0]]
 
         //Se crea un objeto semilla con el arreglo definido previamente
-        def semillaBlock = new Semilla('Beehive', elementos)
+        def semilla = new Semilla('Beehive', elementos)
 
         //Se regresa la semilla recién creada
-        return semillaBlock
+        return semilla
     }
 
-    //Se define una semilla con patrón Block
+    //Se define una semilla con el patrón especificado
     def createSemillaLoaf () {
 
         //Se define el patrón de la semilla
@@ -61,13 +61,13 @@ class SemillaService {
                          [0,0,0,0,0,0,0,0]]
 
         //Se crea un objeto semilla con el arreglo definido previamente
-        def semillaBlock = new Semilla('Loaf', elementos)
+        def semilla = new Semilla('Loaf', elementos)
 
         //Se regresa la semilla recién creada
-        return semillaBlock
+        return semilla
     }
 
-    //Se define una semilla con patrón Block
+    //Se define una semilla con el patrón especificado
     def createSemillaBoat () {
 
         //Se define el patrón de la semilla
@@ -81,10 +81,50 @@ class SemillaService {
                          [0,0,0,0,0,0,0,0]]
 
         //Se crea un objeto semilla con el arreglo definido previamente
-        def semillaBlock = new Semilla('Boat', elementos)
+        def semilla = new Semilla('Boat', elementos)
 
         //Se regresa la semilla recién creada
-        return semillaBlock
+        return semilla
+    }
+
+    //Se define una semilla con el patrón especificado
+    def createSemillaBlinker () {
+
+        //Se define el patrón de la semilla
+        def elementos = [[0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,1,1,1,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0]]
+
+        //Se crea un objeto semilla con el arreglo definido previamente
+        def semilla = new Semilla('Blinker', elementos)
+
+        //Se regresa la semilla recién creada
+        return semilla
+    }
+
+    //Se define una semilla con el patrón especificado
+    def createSemillaToad () {
+
+        //Se define el patrón de la semilla
+        def elementos = [[0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,1,1,1,0,0,0],
+                         [0,1,1,1,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0]]
+
+        //Se crea un objeto semilla con el arreglo definido previamente
+        def semilla = new Semilla('Blinker', elementos)
+
+        //Se regresa la semilla recién creada
+        return semilla
     }
 
     //Pruebas de los métodos de la clase
@@ -108,6 +148,14 @@ class SemillaService {
 
         //Se ejecuta el método a ser probado y se imprime su contenido.
         semilla = service.createSemillaBoat()
+        println semilla
+
+        //Se ejecuta el método a ser probado y se imprime su contenido.
+        semilla = service.createSemillaBlinker()
+        println semilla
+
+        //Se ejecuta el método a ser probado y se imprime su contenido.
+        semilla = service.createSemillaToad()
         println semilla
     }
 }
