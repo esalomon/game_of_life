@@ -9,7 +9,7 @@ import services.UtileriasService
 class Tablero {
 
     //Atributos de la clase
-    def utilerias = new UtileriasService()
+    private def utilerias = new UtileriasService()
 
     private Integer alto
     private Integer ancho
@@ -17,6 +17,8 @@ class Tablero {
     Semilla semilla
 
     ArrayList elementos
+
+    Integer contadorCalculos = 0
 
     Tablero(Semilla semilla) {
         //Se asignan los parámetros de la clase.
@@ -61,7 +63,11 @@ class Tablero {
 
     //Se recorre el arreglo calculando el nuevo estado de cada celula.
     void calcularNuevoEstado() {
+        //Definición de las variables del método
         def suma
+
+        //Se incrementa el contador de cálculos:
+        contadorCalculos++
 
         //Se genera una copia temporal del arreglo de elementos
         def arrelgoCopia = utilerias.arrayListClone(elementos)
@@ -286,6 +292,11 @@ class Tablero {
         return output
     }
 
+    //Se define la propiedad contador de cálulos como read-only.
+    private void setContadorCalculos (contador){
+        this.contadorCalculos = contador
+    }
+
     //Pruebas de los métodos de la clase
     static void main(args) {
         //Se crea una semilla
@@ -297,11 +308,15 @@ class Tablero {
         //Se crea un tablero con la semilla recien creada
         def tablero = new Tablero(semilla)
         println tablero
+        println "contador: $tablero.contadorCalculos"
 
         //Se prueban dos iteraciones de cálculos
         tablero.calcularNuevoEstado()
         println tablero
+        println "contador: $tablero.contadorCalculos"
+
         tablero.calcularNuevoEstado()
         println tablero
+        println "contador: $tablero.contadorCalculos"
     }
 }
