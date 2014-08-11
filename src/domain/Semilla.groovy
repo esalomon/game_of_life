@@ -1,11 +1,15 @@
 package domain
 
+import services.UtileriasService
+
 /**
  * Created by esalomon on 10/08/14.
  */
 class Semilla {
 
     //Atributos de la clase
+    def utilerias = new UtileriasService()
+
     String nombre
 
     private Integer alto
@@ -50,14 +54,7 @@ class Semilla {
     //Destrucción del objeto semilla
     void finalize() {
         //Se recorren los arreglos para obtener los valores
-        for (int renglon = 0; renglon < this.alto; renglon++ ){
-
-            //Se libera cada uno de los arreglos internos
-            this.elementos[renglon].clear()
-        }
-
-        //Se liberan el renglon externo
-        this.elementos.clear()
+        utilerias.arrayListClear(elementos)
 
         //Se asigna null a las variables de la instancia
         nombre = null
@@ -77,13 +74,7 @@ class Semilla {
         output.append " +  ancho: $ancho \n"
 
         //Se recorren los arreglos para obtener los valores
-        for (int renglon = 0; renglon < this.alto; renglon++ ){
-            for (int columna = 0; columna < this.ancho; columna++ ){
-
-                output.append this.elementos[renglon][columna]
-            }
-            output.append "\n"
-        }
+        output.append utilerias.arrayListToString(elementos)
 
         //Se regresa l representación en texto del objeto
         return output
