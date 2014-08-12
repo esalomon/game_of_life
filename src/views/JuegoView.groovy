@@ -14,7 +14,7 @@ import javax.swing.WindowConstants
 import javax.swing.BorderFactory
 import javax.swing.JOptionPane
 
-class JuegoView {
+class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
 
     def swing = new SwingBuilder()
     def frame
@@ -23,12 +23,14 @@ class JuegoView {
     JComboBox comboSemilla
 
     def controlador = new JuegoController()
-    def tablero = controlador.iniciarTablero("Blinker")
     def semillaList = controlador.obtenerSemillaStrings()
 
     //Se inicializa la aplicación.
     JuegoView () {
-        //todo pendiente
+
+        //Se suscribe la pantalla al publicador para recibir las actualizaciones.
+        controlador.setSubscriberTableroArea(this)
+        controlador.setSubscriberInfoArea(this)
     }
 
     static void main(args) {
@@ -110,14 +112,14 @@ class JuegoView {
                 vbox(constraints: BorderLayout.CENTER,
                     border: BorderFactory.createTitledBorder('Tablero')) {
                         scrollPane(constraints: BorderLayout.CENTER, border: BorderFactory.createRaisedBevelBorder()) {
-                            tableroArea = textArea(text: tablero.getElementos(), toolTipText: 'Se despliega la información del juego.')
+                            tableroArea = textArea(text: '', toolTipText: 'Se despliega la información del juego.')
                     }
                 }
 
                 vbox(constraints: BorderLayout.SOUTH,
                     border: BorderFactory.createTitledBorder('Información')) {
                         scrollPane(constraints: BorderLayout.CENTER, border: BorderFactory.createRaisedBevelBorder()) {
-                            infoArea = textArea(text: 'Inicialización de la ventana del juego.\n',
+                            infoArea = textArea(text: '',
                                        toolTipText: 'Se despliega la información del estado del juego',
                                        rows: 5,
                                        editable: false)
@@ -126,8 +128,11 @@ class JuegoView {
             }
         }
 
-        //Se posiciona al final del text area
-        infoArea.setCaretPosition(infoArea.getDocument().getLength());
+        //Se despliega un mensaje en el area de información
+        publicarInfoArea('Inicialización de la ventana del juego')
+
+        //Se inicializa el tablero
+        controlador.iniciarTablero("Blinker")
 
         //Se despliega la pantalla.
         frame.setVisible(true)
@@ -138,13 +143,10 @@ class JuegoView {
 
         //Se obtiene el texto del combo
         def semillaString = comboSemilla.getSelectedItem()
-        infoArea.append("[" + new Date().toString() + "] Se selecionó la semilla $semillaString.\n")
+        infoArea.append("[" + new Date().toString() + "] Se solicitó cambiar a la semilla $semillaString.\n")
 
         //Se le indica al controlador que cambie la semilla
-        tablero = controlador.iniciarTablero(semillaString) //todo desacoplar objetos
-
-        //Se obtiene la nueva distribución del tablero y se muestra en la ventana
-        tableroArea.text = controlador.obtenerElementosTablero()
+        controlador.iniciarTablero(semillaString)
     }
 
     def iniciarJuego (event) {
@@ -164,6 +166,19 @@ class JuegoView {
         JOptionPane.showMessageDialog (frame, "Implementación del \n" +
                                               "Juego de la Vida de Conway \n" +
                                               "por Efraín Salomón.")
+    }
+
+    void publicarInfoArea(String actualizacion) {
+        //Se agrega el nuevo mensaje al text área
+        infoArea.append("[" + new Date().toString() + "] $actualizacion.\n")
+
+        //Se posiciona al final del text area
+        infoArea.setCaretPosition(infoArea.getDocument().getLength());
+    }
+
+    void publicarTableroArea() {
+        //Se obtienen el texto de los elementos del tablero
+        tableroArea.text = controlador.obtenerElementosTablero()
     }
 }
 

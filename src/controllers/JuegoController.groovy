@@ -1,8 +1,9 @@
 package controllers
 
-import domain.Semilla
 import domain.Tablero
 import services.SemillaService
+import views.InfoAreaInterfaz
+import views.TableroAreaInterfaz
 
 /**
  * Created by esalomon on 10/08/14.
@@ -12,18 +13,25 @@ class JuegoController {
     //Servicios de la clase
     private def semillaService = new SemillaService()
 
+    //Suscriptores
+    InfoAreaInterfaz infoAreaSuscriptor
+    TableroAreaInterfaz tableroAreaSuscriptor
+
     //Atributos de la clase
-    def tablero
-    Thread hiloCalculos;
+    private def tablero
+    private Thread hiloCalculos;
 
     //Se inicializa el tablero con la semilla indicada
-    Tablero iniciarTablero(semillaString) {
+    void iniciarTablero(semillaString) {
 
         //Se crea un tablero con la semilla recien creada
         tablero = new Tablero(semillaString)
 
-        //Se regresa el objeto recien creado
-        return tablero
+        //Se publica un mensaje asociado a la acción.
+        infoAreaSuscriptor.publicarInfoArea("Se inicializó el tablero con la semilla $semillaString")
+
+        //Se publica la nueva distribución del teclado
+        tableroAreaSuscriptor.publicarTableroArea()
     }
 
     String obtenerElementosTablero (){
@@ -32,6 +40,16 @@ class JuegoController {
 
     ArrayList obtenerSemillaStrings() {
         return semillaService.getSemillaList()
+    }
+
+    //Suscribirse al publicador de información
+    void setSubscriberInfoArea (suscriptor) {
+        infoAreaSuscriptor = suscriptor
+    }
+
+    //Suscribirse al publicador del tablero
+    void setSubscriberTableroArea (suscriptor) {
+        tableroAreaSuscriptor = suscriptor
     }
 
     void iniciarCalculos() {
