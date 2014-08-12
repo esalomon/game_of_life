@@ -21,10 +21,12 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
 
     JTextArea infoArea, tableroArea
     JComboBox comboSemilla
-    JButton changeButton, startButton, stopButton, exitButton
+    JButton changeButton, startButton, continueButton, stopButton, exitButton
 
     def controlador = new JuegoController()
     def semillaList = controlador.obtenerSemillaStrings()
+
+    def semillaActual
 
     //Se inicializa la aplicación.
     JuegoView () {
@@ -44,6 +46,13 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
 
     void run() {
         //Se definen las acciones de la pantala.
+        def changeSeed = swing.action(
+                name: 'Asignar',
+                closure: this.&cambiarSemilla,
+                mnemonic: 'G',
+                accelerator: 'ctrl G'
+        )
+
         def start = swing.action(
                 name: 'Iniciar',
                 closure: this.&iniciarJuego,
@@ -51,11 +60,11 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
                 accelerator: 'ctrl I'
         )
 
-        def changeSeed = swing.action(
-                name: 'Asignar',
-                closure: this.&cambiarSemilla,
-                mnemonic: 'G',
-                accelerator: 'ctrl G'
+        def continuar = swing.action(
+                name: 'Continuar',
+                closure: this.&continuarJuego,
+                mnemonic: 'O',
+                accelerator: 'ctrl O'
         )
 
         def stop = swing.action(
@@ -87,6 +96,7 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
             menuBar() {
                 menu(mnemonic: 'A', 'Actiones') {
                     menuItem(action: start)
+                    menuItem(action: continuar)
                     menuItem(action: stop)
                     menuItem(action: exit)
                 }
@@ -109,8 +119,9 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
                 vbox(constraints: BorderLayout.WEST,
                     border: BorderFactory.createTitledBorder('Acciones:')) {
                         startButton = button(action: start)
-                        stopButton  = button(action: stop, enabled: false)
-                        exitButton  = button(action: exit)
+                     continueButton = button(action: continuar, enabled: false)
+                         stopButton = button(action: stop, enabled: false)
+                         exitButton = button(action: exit)
                 }
 
                 vbox(constraints: BorderLayout.CENTER,
@@ -146,11 +157,8 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
     def cambiarSemilla (event) {
 
         //Se obtiene el texto del combo
-        def semillaString = comboSemilla.getSelectedItem()
-        publicarInfoArea("Se solicitó cambiar a la semilla $semillaString")
-
-        //Se le indica al controlador que cambie la semilla
-        controlador.iniciarTablero(semillaString)
+        semillaActual = comboSemilla.getSelectedItem()
+        publicarInfoArea("Se solicitó cambiar a la semilla $semillaActual")
     }
 
     def iniciarJuego (event) {
@@ -160,10 +168,28 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
         comboSemilla.setEnabled(false)
         changeButton.setEnabled(false)
         startButton.setEnabled(false)
+        continueButton.setEnabled(false)
         stopButton.setEnabled(true)
+
+        //Se le indica al controlador que cambie la semilla
+        controlador.iniciarTablero(semillaActual)
 
         //Se solicita el inicio de la ejecución de los calculos.
         controlador.iniciarCalculos()
+    }
+
+    def continuarJuego (event) {
+        publicarInfoArea("Se oprimió el botón continuar juego")
+
+        //Se habilitan y deshabilitan los elementos gráficos
+        comboSemilla.setEnabled(false)
+        changeButton.setEnabled(false)
+        startButton.setEnabled(false)
+        continueButton.setEnabled(false)
+        stopButton.setEnabled(true)
+
+        //Se solicita que se detenga la ejecución de los calculos.
+        controlador.continuarCalculos()
     }
 
     def detenerJuego (event) {
@@ -173,6 +199,7 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
         comboSemilla.setEnabled(true)
         changeButton.setEnabled(true)
         startButton.setEnabled(true)
+        continueButton.setEnabled(true)
         stopButton.setEnabled(false)
 
         //Se solicita que se detenga la ejecución de los calculos.

@@ -72,6 +72,12 @@ class JuegoController {
         }
     }
 
+    void continuarCalculos() {
+
+        //Se detiene la ejecución del hilo
+        hiloCalculos.resume()
+    }
+
     void detenerCalculos() {
 
         //Se detiene la ejecución del hilo
