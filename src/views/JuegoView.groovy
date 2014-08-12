@@ -156,11 +156,14 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
     def iniciarJuego (event) {
         publicarInfoArea("Se oprimió el botón iniciar juego")
 
-        //Se habilitan y deshabilitan los elementos gráficos
+        //Se habilitan y deshabilitan los elementos gráficos.
         comboSemilla.setEnabled(false)
         changeButton.setEnabled(false)
         startButton.setEnabled(false)
         stopButton.setEnabled(true)
+
+        //Se solicita la ejecución de los calculos.
+        controlador.iniciarCalculos()
     }
 
     def detenerJuego (event) {

@@ -30,7 +30,7 @@ class JuegoController {
         //Se publica un mensaje asociado a la acción.
         infoAreaSuscriptor.publicarInfoArea("Se inicializó el tablero con la semilla $semillaString")
 
-        //Se publica la nueva distribución del teclado
+        //Se publica la nueva distribución de los elementos del tablero
         tableroAreaSuscriptor.publicarTableroArea()
     }
 
@@ -55,9 +55,18 @@ class JuegoController {
     void iniciarCalculos() {
         //Se define un hilo para
         hiloCalculos = Thread.start {
+            //Se define un ciclo infinito para la ejecución del hilo
             while (true) {
+                //Se solicita al tablero que ejecute el siguiente cálculo.
                 tablero.calcularNuevoEstado()
-                tableroArea.text = tablero.getElementos()
+
+                //Se publica un mensaje asociado a la acción.
+                infoAreaSuscriptor.publicarInfoArea("Se realizó el cálculo número: $tablero.contadorCalculos")
+
+                //Se publica la nueva distribución de los elementos del tablero
+                tableroAreaSuscriptor.publicarTableroArea()
+
+                //Se detiene la ejecución del hilo
                 sleep(1000)
             }
         }
