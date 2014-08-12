@@ -4,10 +4,10 @@
 
 package views
 
-import domain.Tablero
+import controllers.JuegoController
 import groovy.swing.SwingBuilder
-import services.SemillaService
 
+import javax.swing.JComboBox
 import javax.swing.JTextArea
 import java.awt.BorderLayout
 import javax.swing.WindowConstants
@@ -18,10 +18,18 @@ class JuegoView {
 
     def swing = new SwingBuilder()
     def frame
-    JTextArea infoArea, tableroArea
 
-    def tablero
-    Thread hiloCalculos;
+    JTextArea infoArea, tableroArea
+    JComboBox comboSemilla
+
+    def controlador = new JuegoController()
+    def tablero = controlador.iniciarTablero("Blinker")
+    def semillaList = controlador.obtenerSemillaStrings()
+
+    //Se inicializa la aplicación.
+    JuegoView () {
+        //todo pendiente
+    }
 
     static void main(args) {
         def juego = new JuegoView()
@@ -29,15 +37,19 @@ class JuegoView {
     }
 
     void run() {
-        //Se inicializa el tablero
-        iniciarTablero()
-
         //Se definen las acciones de la pantala.
         def start = swing.action(
                 name: 'Iniciar',
                 closure: this.&iniciarJuego,
                 mnemonic: 'I',
                 accelerator: 'ctrl I'
+        )
+
+        def changeSeed = swing.action(
+                name: 'Asignar',
+                closure: this.&cambiarSemilla,
+                mnemonic: 'G',
+                accelerator: 'ctrl G'
         )
 
         def stop = swing.action(
@@ -79,10 +91,20 @@ class JuegoView {
 
             panel(border: BorderFactory.createEmptyBorder()) {
                 borderLayout()
-                vbox(constraints: BorderLayout.WEST) {
-                    button(action: start)
-                    button(action: stop)
-                    button(action: exit)
+                hbox(constraints: BorderLayout.NORTH,
+                    border: BorderFactory.createTitledBorder('')) {
+                        vstrut(height: 1)
+                        label 'Semilla:'
+                        comboSemilla = comboBox(items: semillaList, selectedIndex: 4, toolTipText: 'Selecciona un patrón de semilla.')
+                        button(action: changeSeed)
+                        35.times { swing.hglue()}
+                }
+
+                vbox(constraints: BorderLayout.WEST,
+                    border: BorderFactory.createTitledBorder('Acciones:')) {
+                        button(action: start)
+                        button(action: stop)
+                        button(action: exit)
                 }
 
                 vbox(constraints: BorderLayout.CENTER,
@@ -104,22 +126,29 @@ class JuegoView {
             }
         }
 
+        //Se posiciona al final del text area
+        infoArea.setCaretPosition(infoArea.getDocument().getLength());
+
         //Se despliega la pantalla.
         frame.setVisible(true)
     }
 
     // Implementacion de las acciones con métodos
+    def cambiarSemilla (event) {
+
+        //Se obtiene el texto del combo
+        def semillaString = comboSemilla.getSelectedItem()
+        infoArea.append("[" + new Date().toString() + "] Se selecionó la semilla $semillaString.\n")
+
+        //Se le indica al controlador que cambie la semilla
+        tablero = controlador.iniciarTablero(semillaString) //todo desacoplar objetos
+
+        //Se obtiene la nueva distribución del tablero y se muestra en la ventana
+        tableroArea.text = controlador.obtenerElementosTablero()
+    }
+
     def iniciarJuego (event) {
         infoArea.append("[" + new Date().toString() + "] Se oprimió el botón iniciar juego.\n")
-
-        //Se define un hilo para
-        hiloCalculos = Thread.start {
-            while (true) {
-                tablero.calcularNuevoEstado()
-                tableroArea.text = tablero.getElementos()
-                sleep(1000)
-            }
-        }
     }
 
     def detenerJuego (event) {
@@ -135,19 +164,6 @@ class JuegoView {
         JOptionPane.showMessageDialog (frame, "Implementación del \n" +
                                               "Juego de la Vida de Conway \n" +
                                               "por Efraín Salomón.")
-    }
-
-    void iniciarTablero () {
-        def service = new SemillaService()
-        //def semilla = service.createSemillaBlock()
-        def semilla = service.createSemillaBlinker()
-        //def semilla = service.createSemillaToad()
-
-        //Se crea un tablero con la semilla recien creada
-        tablero = new Tablero(semilla)
-
-        //Se prueban dos iteraciones de cálculos
-        tablero.calcularNuevoEstado()
     }
 }
 
