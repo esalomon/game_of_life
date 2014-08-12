@@ -7,6 +7,18 @@ import domain.Semilla
  */
 class SemillaService {
 
+    //Se regresa una lista con todos los patrones de semilla disponibles.
+    ArrayList getSemillaList (){
+
+        return ['Block',
+                'Beehive',
+                'Loaf',
+                'Boat',
+                'Blinker',
+                'Toad']
+    }
+
+
     //Se define una semilla con el patrón especificado
     def createSemillaBlock () {
 
@@ -126,6 +138,45 @@ class SemillaService {
         //Se regresa la semilla recién creada
         return semilla
     }
+
+    //Se regresa un patrón de semilla según la cadena que se recibe
+    Semilla obtenerSemillaObjeto(simillaString) {
+
+        def semilla
+
+        switch (simillaString) {
+            case 'Block':
+                semilla = createSemillaBlock()
+                break
+
+            case 'Beehive':
+                semilla = createSemillaBeehive()
+                break
+
+            case 'Loaf':
+                semilla = createSemillaLoaf()
+                break
+
+            case 'Boat':
+                semilla = createSemillaBoat()
+                break
+
+            case 'Blinker':
+                semilla = createSemillaBlinker()
+                break
+
+            case 'Toad':
+                semilla = createSemillaToad()
+                break
+
+            default:
+                semilla = createSemillaBlinker()
+        }
+
+        return semilla
+    }
+
+
 
     //Pruebas de los métodos de la clase
     static void main(args) {

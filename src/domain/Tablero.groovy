@@ -9,7 +9,8 @@ import services.UtileriasService
 class Tablero {
 
     //Atributos de la clase
-    private def utilerias = new UtileriasService()
+    private def utileriasService = new UtileriasService()
+    private def semillaService = new SemillaService()
 
     private Integer alto
     private Integer ancho
@@ -20,12 +21,12 @@ class Tablero {
 
     Integer contadorCalculos = 0
 
-    Tablero(Semilla semilla) {
-        //Se asignan los parámetros de la clase.
-        this.semilla = semilla
+    Tablero(String semillaString) {
+        //Se obtiene la semilla a partir de la cadena
+        this.semilla = semillaService.obtenerSemillaObjeto(semillaString)
 
         //Se copia el arreglo de la semilla al arreglo del tablero.
-        elementos = utilerias.arrayListClone(semilla.elementos)
+        elementos = utileriasService.arrayListClone(semilla.elementos)
 
         //Se obtienen el número de columnas y renglones del arreglo
         this.alto = elementos.size()
@@ -35,10 +36,10 @@ class Tablero {
     //Destrucción del objeto semilla
     void finalize() {
         //Se recorren los arreglos para obtener los valores
-        utilerias.arrayListClear(elementos)
+        utileriasService.arrayListClear(elementos)
 
         //Se asigna null a las variables de la instancia
-        utilerias = null
+        utileriasService = null
         alto      = null
         ancho     = null
         semilla   = null
@@ -57,7 +58,7 @@ class Tablero {
         output.append " + semilla: $semilla.nombre \n"
 
         //Se recorren los arreglos para obtener los valores
-        output.append utilerias.arrayListToString(elementos)
+        output.append utileriasService.arrayListToString(elementos)
 
         //Se regresa l representación en texto del objeto
         return output
@@ -72,7 +73,7 @@ class Tablero {
         contadorCalculos++
 
         //Se genera una copia temporal del arreglo de elementos
-        def arrelgoCopia = utilerias.arrayListClone(elementos)
+        def arrelgoCopia = utileriasService.arrayListClone(elementos)
 
         //Se recorren los arreglos para obtener los valores
         for (int renglon = 0; renglon < alto; renglon++) {
@@ -99,7 +100,7 @@ class Tablero {
         }
 
         //Se libera la memoria asociada a la copia
-        utilerias.arrayListClear(arrelgoCopia)
+        utileriasService.arrayListClear(arrelgoCopia)
     }
 
     //Se suman los elementos vivos de cada grupo.
@@ -288,7 +289,7 @@ class Tablero {
         StringBuffer output = new StringBuffer("")
 
         //Se recorren los arreglos para obtener los valores
-        output.append utilerias.arrayListToString(elementos)
+        output.append utileriasService.arrayListToString(elementos)
 
         //Se regresa l representación en texto del objeto
         return output
@@ -301,14 +302,8 @@ class Tablero {
 
     //Pruebas de los métodos de la clase
     static void main(args) {
-        //Se crea una semilla
-        def service = new SemillaService()
-        //def semilla = service.createSemillaBlock()
-        //def semilla = service.createSemillaBlinker()
-        def semilla = service.createSemillaToad()
-
-        //Se crea un tablero con la semilla recien creada
-        def tablero = new Tablero(semilla)
+        //Se crea un tablero con la semilla indicada
+        def tablero = new Tablero("Toad")
         println tablero
         println "contador: $tablero.contadorCalculos"
 
@@ -320,5 +315,8 @@ class Tablero {
         tablero.calcularNuevoEstado()
         println tablero
         println "contador: $tablero.contadorCalculos"
+
+        def tablero2 = new Tablero("Blinker")
+        println tablero2
     }
 }
