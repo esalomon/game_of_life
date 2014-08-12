@@ -15,7 +15,8 @@ class SemillaService {
                 'Loaf',
                 'Boat',
                 'Blinker',
-                'Toad']
+                'Toad',
+                'Beacon']
     }
 
 
@@ -139,6 +140,26 @@ class SemillaService {
         return semilla
     }
 
+    //Se define una semilla con el patrón especificado
+    def createSemillaBeacon () {
+
+        //Se define el patrón de la semilla
+        def elementos = [[0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,1,1,0,0,0,0],
+                         [0,0,1,1,0,0,0,0],
+                         [0,0,0,0,1,1,0,0],
+                         [0,0,0,0,1,1,0,0],
+                         [0,0,0,0,0,0,0,0],
+                         [0,0,0,0,0,0,0,0]]
+
+        //Se crea un objeto semilla con el arreglo definido previamente
+        def semilla = new Semilla('Beacon', elementos)
+
+        //Se regresa la semilla recién creada
+        return semilla
+    }
+
     //Se regresa un patrón de semilla según la cadena que se recibe
     Semilla obtenerSemillaObjeto(simillaString) {
 
@@ -167,6 +188,10 @@ class SemillaService {
 
             case 'Toad':
                 semilla = createSemillaToad()
+                break
+
+            case 'Beacon':
+                semilla = createSemillaBeacon()
                 break
 
             default:
