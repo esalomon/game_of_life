@@ -15,15 +15,17 @@ Requerimientos de la Implementación
 Información tomada de 'https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life':
 
 At each step in time, the following transitions occur:
-    1.Any live cell with fewer than two live neighbours dies, as if caused by under-population.
-    2.Any live cell with two or three live neighbours lives on to the next generation.
-    3.Any live cell with more than three live neighbours dies, as if by overcrowding.
-    4.Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+2. Any live cell with two or three live neighbours lives on to the next generation.
+3. Any live cell with more than three live neighbours dies, as if by overcrowding.
+4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 
 Scientific observers point:
-    A. If the sum of all nine fields is 3, the inner field state for the next generation will be life (no matter of its previous contents).
-    B. If the all-field sum is 4, the inner field retains its current state.
-    C. Every other sum sets the inner field to death.
+
+1. If the sum of all nine fields is 3, the inner field state for the next generation will be life (no matter of its previous contents).
+2. If the all-field sum is 4, the inner field retains its current state.
+3. Every other sum sets the inner field to death.
 
 Diseño
 ------
