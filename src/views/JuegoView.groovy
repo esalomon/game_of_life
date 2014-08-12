@@ -28,7 +28,7 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
     def controlador = new JuegoController()
     def semillaList = controlador.obtenerSemillaStrings()
 
-    def semillaActual
+    def semillaActual = "Glider"
 
     //Se inicializa la aplicación.
     JuegoView () {
@@ -113,7 +113,7 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
                     border: BorderFactory.createTitledBorder('')) {
                         vstrut(height: 1)
                         label 'Semilla:'
-                        comboSemilla = comboBox(items: semillaList, selectedIndex: 4, toolTipText: 'Selecciona un patrón de semilla.')
+                        comboSemilla = comboBox(items: semillaList, selectedIndex: 7, toolTipText: 'Selecciona un patrón de semilla.')
                         changeButton = button(action: changeSeed)
                         35.times { swing.hglue()}
                 }
@@ -153,7 +153,7 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
         publicarInfoArea('Inicialización de la ventana del juego')
 
         //Se inicializa el tablero
-        controlador.iniciarTablero("Blinker")
+        controlador.iniciarTablero(semillaActual)
 
         //Se despliega la pantalla.
         frame.setVisible(true)
