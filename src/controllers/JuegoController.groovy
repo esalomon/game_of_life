@@ -74,6 +74,8 @@ class JuegoController {
 
     void detenerCalculos() {
 
+        //Se detiene la ejecución del hilo
+        hiloCalculos.suspend()
     }
 
     //Pruebas de los métodos de la clase

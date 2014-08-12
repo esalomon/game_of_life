@@ -162,7 +162,7 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
         startButton.setEnabled(false)
         stopButton.setEnabled(true)
 
-        //Se solicita la ejecución de los calculos.
+        //Se solicita el inicio de la ejecución de los calculos.
         controlador.iniciarCalculos()
     }
 
@@ -174,6 +174,9 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
         changeButton.setEnabled(true)
         startButton.setEnabled(true)
         stopButton.setEnabled(false)
+
+        //Se solicita que se detenga la ejecución de los calculos.
+        controlador.detenerCalculos()
     }
 
     def salirJuego (event) {
