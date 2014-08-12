@@ -38,9 +38,11 @@ class Tablero {
         utilerias.arrayListClear(elementos)
 
         //Se asigna null a las variables de la instancia
-        semilla = null
-        alto = null
-        ancho = null
+        utilerias = null
+        alto      = null
+        ancho     = null
+        semilla   = null
+        contadorCalculos = null
     }
 
     //Representación en texto de los objetos tablero

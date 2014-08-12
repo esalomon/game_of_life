@@ -57,9 +57,10 @@ class Semilla {
         utilerias.arrayListClear(elementos)
 
         //Se asigna null a las variables de la instancia
-        nombre = null
-        alto   = null
-        ancho  = null
+        utilerias = null
+        nombre    = null
+        alto      = null
+        ancho     = null
     }
 
     //Representación en texto de los objetos semilla
