@@ -6,7 +6,7 @@ package views
 
 import controllers.JuegoController
 import groovy.swing.SwingBuilder
-
+import javax.swing.JButton
 import javax.swing.JComboBox
 import javax.swing.JTextArea
 import java.awt.BorderLayout
@@ -21,6 +21,7 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
 
     JTextArea infoArea, tableroArea
     JComboBox comboSemilla
+    JButton changeButton, startButton, stopButton, exitButton
 
     def controlador = new JuegoController()
     def semillaList = controlador.obtenerSemillaStrings()
@@ -34,7 +35,10 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
     }
 
     static void main(args) {
+        //Se define una instancia de la vista.
         def juego = new JuegoView()
+
+        //Se inicia la ejecución de la pantalla.
         juego.run()
     }
 
@@ -98,15 +102,15 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
                         vstrut(height: 1)
                         label 'Semilla:'
                         comboSemilla = comboBox(items: semillaList, selectedIndex: 4, toolTipText: 'Selecciona un patrón de semilla.')
-                        button(action: changeSeed)
+                        changeButton = button(action: changeSeed)
                         35.times { swing.hglue()}
                 }
 
                 vbox(constraints: BorderLayout.WEST,
                     border: BorderFactory.createTitledBorder('Acciones:')) {
-                        button(action: start)
-                        button(action: stop)
-                        button(action: exit)
+                        startButton = button(action: start)
+                        stopButton  = button(action: stop, enabled: false)
+                        exitButton  = button(action: exit)
                 }
 
                 vbox(constraints: BorderLayout.CENTER,
@@ -143,18 +147,30 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
 
         //Se obtiene el texto del combo
         def semillaString = comboSemilla.getSelectedItem()
-        infoArea.append("[" + new Date().toString() + "] Se solicitó cambiar a la semilla $semillaString.\n")
+        publicarInfoArea("Se solicitó cambiar a la semilla $semillaString")
 
         //Se le indica al controlador que cambie la semilla
         controlador.iniciarTablero(semillaString)
     }
 
     def iniciarJuego (event) {
-        infoArea.append("[" + new Date().toString() + "] Se oprimió el botón iniciar juego.\n")
+        publicarInfoArea("Se oprimió el botón iniciar juego")
+
+        //Se habilitan y deshabilitan los elementos gráficos
+        comboSemilla.setEnabled(false)
+        changeButton.setEnabled(false)
+        startButton.setEnabled(false)
+        stopButton.setEnabled(true)
     }
 
     def detenerJuego (event) {
-        infoArea.append("[" + new Date().toString() + "] Se oprimió el botón detener juego.\n")
+        publicarInfoArea("Se oprimió el botón detener juego")
+
+        //Se habilitan y deshabilitan los elementos gráficos
+        comboSemilla.setEnabled(true)
+        changeButton.setEnabled(true)
+        startButton.setEnabled(true)
+        stopButton.setEnabled(false)
     }
 
     def salirJuego (event) {
