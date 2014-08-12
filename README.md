@@ -30,11 +30,7 @@ Diseño
 Diagrama de Clases
 ![Diagrama Clases del Juego](docs/game_of_life_0dsn_class_diagram.jpg)
 
-tmp
-===
-1Para mas detalles consultar el [Documento de Disenio](docs/game_of_life_0dsn_1document.doc).
-
-2Para mas detalles consultar el documento de diseño: 'docs/game_of_life_0dsn_1document.doc'.
+Para mas detalles consultar el [Documento de Disenio](docs/game_of_life_0dsn_1document.doc).
 
 Requerimientos para la ejecución
 ---------------------------
