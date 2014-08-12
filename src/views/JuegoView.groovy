@@ -6,6 +6,7 @@ package views
 
 import controllers.JuegoController
 import groovy.swing.SwingBuilder
+
 import javax.swing.JButton
 import javax.swing.JComboBox
 import javax.swing.JTextArea
@@ -13,6 +14,7 @@ import java.awt.BorderLayout
 import javax.swing.WindowConstants
 import javax.swing.BorderFactory
 import javax.swing.JOptionPane
+import java.awt.Font
 
 class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
 
@@ -127,7 +129,9 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
                 vbox(constraints: BorderLayout.CENTER,
                     border: BorderFactory.createTitledBorder('Tablero')) {
                         scrollPane(constraints: BorderLayout.CENTER, border: BorderFactory.createRaisedBevelBorder()) {
-                            tableroArea = textArea(text: '', toolTipText: 'Se despliega la información del juego.')
+                            tableroArea = textArea(text: '',
+                                                   font: new Font("Courrier New", Font.BOLD, 34),
+                                                   toolTipText: 'Se despliega la información del juego.')
                     }
                 }
 
@@ -142,6 +146,8 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
                 }
             }
         }
+
+        //tableroArea.setFont()
 
         //Se despliega un mensaje en el area de información
         publicarInfoArea('Inicialización de la ventana del juego')
