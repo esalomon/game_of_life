@@ -23,7 +23,7 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
 
     JTextArea infoArea, tableroArea
     JComboBox comboSemilla
-    JButton changeButton, startButton, continueButton, stopButton, exitButton
+    JButton assignButton, startButton, continueButton, stopButton, exitButton
 
     def controlador = new JuegoController()
     def semillaList = controlador.obtenerSemillaStrings()
@@ -53,6 +53,13 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
                 closure: this.&cambiarSemilla,
                 mnemonic: 'G',
                 accelerator: 'ctrl G'
+        )
+
+        def assignSeed = swing.action(
+                name: 'Asignar',
+                closure: this.&asignarSemilla,
+                mnemonic: 'N',
+                accelerator: 'ctrl N'
         )
 
         def start = swing.action(
@@ -113,8 +120,8 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
                     border: BorderFactory.createTitledBorder('')) {
                         vstrut(height: 1)
                         label 'Semilla:'
-                        comboSemilla = comboBox(items: semillaList, selectedIndex: 7, toolTipText: 'Selecciona un patrón de semilla.')
-                        changeButton = button(action: changeSeed)
+                        comboSemilla = comboBox(items: semillaList, action: changeSeed, toolTipText: 'Selecciona un patrón de semilla.')
+                        assignButton = button(action: assignSeed)
                         35.times { swing.hglue()}
                 }
 
@@ -147,12 +154,13 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
             }
         }
 
-        //tableroArea.setFont()
-
         //Se despliega un mensaje en el area de información
         publicarInfoArea('Inicialización de la ventana del juego')
 
-        //Se inicializa el tablero
+        //Se inicializa el combo con el texto Glider
+        comboSemilla.setSelectedIndex(7)
+
+        //Se inicializa el tablero con la semilla indicada en el combo.
         controlador.iniciarTablero(semillaActual)
 
         //Se despliega la pantalla.
@@ -167,18 +175,30 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
         publicarInfoArea("Se solicitó cambiar a la semilla $semillaActual")
     }
 
+    def asignarSemilla (event) {
+        publicarInfoArea("Se oprimió el botón asignar semilla")
+        publicarInfoArea(" + se reinicia el tablero con la nueva semilla")
+
+        //Se habilitan y deshabilitan los elementos gráficos
+        comboSemilla.setEnabled(true)
+        assignButton.setEnabled(true)
+        startButton.setEnabled(true)
+        continueButton.setEnabled(false)
+        stopButton.setEnabled(false)
+
+        //Se le indica al controlador que cambie la semilla
+        controlador.iniciarTablero(semillaActual)
+    }
+
     def iniciarJuego (event) {
         publicarInfoArea("Se oprimió el botón iniciar juego")
 
         //Se habilitan y deshabilitan los elementos gráficos.
         comboSemilla.setEnabled(false)
-        changeButton.setEnabled(false)
+        assignButton.setEnabled(false)
         startButton.setEnabled(false)
         continueButton.setEnabled(false)
         stopButton.setEnabled(true)
-
-        //Se le indica al controlador que cambie la semilla
-        controlador.iniciarTablero(semillaActual)
 
         //Se solicita el inicio de la ejecución de los calculos.
         controlador.iniciarCalculos()
@@ -189,7 +209,7 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
 
         //Se habilitan y deshabilitan los elementos gráficos
         comboSemilla.setEnabled(false)
-        changeButton.setEnabled(false)
+        assignButton.setEnabled(false)
         startButton.setEnabled(false)
         continueButton.setEnabled(false)
         stopButton.setEnabled(true)
@@ -203,7 +223,7 @@ class JuegoView implements InfoAreaInterfaz, TableroAreaInterfaz{
 
         //Se habilitan y deshabilitan los elementos gráficos
         comboSemilla.setEnabled(true)
-        changeButton.setEnabled(true)
+        assignButton.setEnabled(true)
         startButton.setEnabled(true)
         continueButton.setEnabled(true)
         stopButton.setEnabled(false)
