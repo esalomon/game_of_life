@@ -176,8 +176,6 @@ class SemillaService {
         return semilla
     }
 
-
-
     //Pruebas de los métodos de la clase
     static void main(args) {
 
